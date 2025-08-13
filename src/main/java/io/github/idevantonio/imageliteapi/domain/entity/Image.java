@@ -39,4 +39,7 @@ public class Image {
     @Lob
     private byte[] file;
 
+    public String getFilename() {
+        return getName().concat(".").concat(getExtension().name());
+    }
 }
