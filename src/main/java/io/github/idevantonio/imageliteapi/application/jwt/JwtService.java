@@ -21,9 +21,9 @@ public class JwtService {
 
     public AccessToken generateToken(User user) {
 
-        SecretKey key = keyGenerator.getKey();
-        Date expirationDate = generateExpirationDate();
-        Map<String, Object> claims = generateTokenClaims(user);
+        var key = keyGenerator.getKey();
+        var expirationDate = generateExpirationDate();
+        var claims = generateTokenClaims(user);
 
         String token = Jwts
                 .builder()
@@ -33,7 +33,7 @@ public class JwtService {
                 .claims(claims)
                 .compact();
 
-        return new AccessToken("");
+        return new AccessToken(token);
     }
     private Date generateExpirationDate() {
         var expirationMinutes = 60;
