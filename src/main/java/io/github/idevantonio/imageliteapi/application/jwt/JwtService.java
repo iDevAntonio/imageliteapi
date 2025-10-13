@@ -2,11 +2,13 @@ package io.github.idevantonio.imageliteapi.application.jwt;
 
 import io.github.idevantonio.imageliteapi.domain.AccessToken;
 import io.github.idevantonio.imageliteapi.domain.entity.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -46,4 +48,21 @@ public class JwtService {
 
         return claims;
     }
+
+    public String getEmailFromToken(String tokenJwt) {
+        try {
+            JwtParser build = Jwts.parser()
+                    .verifyWith(keyGenerator.getKey())
+                    .build();
+
+            Jws<Claims> jwsClaims = build.parseSignedClaims(tokenJwt);
+
+            Claims claims = jwsClaims.getPayload();
+            return claims.getSubject();
+
+        }  catch (Exception e) {
+            throw new InvalidTokenException(e.getMessage());
+        }
+    }
+
 }
